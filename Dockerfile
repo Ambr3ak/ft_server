@@ -11,10 +11,11 @@ RUN apt-get -y update && apt-get -y install mariadb-server \
      php-json \
      sudo \
      nginx \
-     libnss3-tools 
+     libnss3-tools
 
 COPY nginx.conf .
 COPY container_entrypoint.sh .
+
 
 EXPOSE 80 443
 ENTRYPOINT ["bash", "container_entrypoint.sh"]
