@@ -12,6 +12,7 @@ RUN apt-get -y update && apt-get -y install mariadb-server \
      sudo \
      nginx \
      libnss3-tools
+RUN apt-get install openssl
 
 COPY nginx.conf .
 COPY container_entrypoint.sh .
