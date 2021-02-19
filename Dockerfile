@@ -18,8 +18,8 @@ COPY nginx.conf .
 COPY wp-config.php .
 COPY autoindex.sh .
 COPY nginx_auto.conf .
-COPY container_entrypoint.sh .
+COPY entrypoint-container.sh .
 
 
 EXPOSE 80 443
-ENTRYPOINT ["bash", "container_entrypoint.sh"]
+ENTRYPOINT ["bash", "entrypoint-container.sh"]
