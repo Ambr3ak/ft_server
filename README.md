@@ -27,6 +27,7 @@ Une image peut contenir tout ce que l'on désire.
 ### Comment naviguer dans le conteneur ?
 
 Pour naviguer dans les differentes partir du conteneur, on utilise les mêmes commandes shell.
+
 Pour entrer dans le conteneur :
 
 ``
@@ -36,6 +37,7 @@ docker exec -it monimage bash
 ## Le Dockerfile
 
 Le Dockerfile est un fichier qui va permettre de lancer son image et d'y inclure tous les fichiers que l'on souhaite.
+
 Ligne 1 
 ```
 FROM image:version -> FROM debian:buster
