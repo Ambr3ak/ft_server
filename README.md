@@ -19,16 +19,16 @@ Docker est un logiciel libre permettant de lancer des applications dans des cont
 
 ### Qu'est ce qu'un conteneur ?
 
-Principe est de faire tourner des env Linux isolés dans des conteneurs partageants le meme noyau.
+Le principe est de faire tourner des environnements Linux isolés dans des conteneurs partageants le meme noyau.
 Un conteneur peut tourner sur n'importe quel OS puisqu'il est complément isolé du reste. 
 Chaque conteneur est créé a partir d'une image Docker, existante (Docker Hub) ou vierge.
 Une image peut contenir tout ce que l'on désire.
 
 ### Comment naviguer dans le conteneur ?
 
-Pour naviguer dans les differentes partir du conteneur, on utilise les mêmes commandes shell.
+Pour naviguer dans les différentes partir du conteneur, on utilise les mêmes commandes shell.
 
-Pour entrer dans le conteneur :
+:warning: Pour entrer dans le conteneur :
 
 ``
 docker exec -it monimage bash
@@ -63,7 +63,7 @@ RUN apt-get -y update && apt-get -y install mariadb-server \
 RUN apt-get install openssl
 ```
 
-``RUN`` permet d'executer des commandes dans le conteneur. Ainsi on installe tous les paquets nécessaires a faire tourner notre serveur.
+``RUN`` permet d'executer des commandes dans le conteneur. Ainsi on installe tous les paquets nécessaires à faire tourner notre serveur.
 
 ligne 17 - 21 
 ```
@@ -74,25 +74,24 @@ COPY srcs/nginx_auto.conf .
 COPY srcs/entrypoint-container.sh .
 ```
               
-Pour utiliser des fichiers exterieurs dans votre conteneur on les ajoute a la racine avec la commande ``COPY``.
-Les fichiers d'installations et de configuration de nos services seront donc a la racine du conteneur.
+Pour utiliser des fichiers extérieurs dans notre conteneur on les ajoute à la racine avec la commande ``COPY``.
 
 Ligne 23 ``EXPOSE 80 443``
 
-``EXPOSE`` permet de preciser le port d'ecoute du conteneur.
+``EXPOSE`` permet de preciser le port d'écoute du conteneur.
 
 Ligne 24 ``ENTRYPOINT ["bash", "entrypoint-container.sh"]``
 
-``ENTRYPOINT`` ici précise la commande a lancer à l’entrée du conteneur. 
+``ENTRYPOINT`` ici précise la commande à lancer dès l’entrée dans le conteneur. 
 
-Pour plus d'utilisations des commandes Dockerfile : https://docs.docker.com/engine/reference/builder/
+Pour plus de précisions sur les commandes Dockerfile : https://docs.docker.com/engine/reference/builder/
 
 ## Installer LEMP
 
-LEMP est un pack pratique a l’installation de serveur web. Son acronyme signie Linux, E(nginx), Mariadb (base de donnée MySql) et Php.
+LEMP est un pack pratique à l’installation de serveur web. Son acronyme signifie **L**inux, **E**(nginx), **M**ariadb (base de donnée MySql) et **P**hp.
 
-La commande ``apt-get`` permet d'obtenir facilement les paquets necessaires a notre installation.
-On effectue toujours un ``apt-get update`` avant afin de recuperer les mises a jour des paquets.
+La commande ``apt-get`` permet d'obtenir facilement les paquets nécessaires à notre installation.
+On effectue toujours un ``apt-get update`` avant afin de récupérer les mises à jour des paquets.
 
 ### Nginx 
 
@@ -101,7 +100,7 @@ Pour lancer le service ``service nginx start``.
 
 ### MySql
 
-MySql est une base de données, Phpmyadmin est une représentation graphique de notre base de données, elle est donc indispensable.
+MySql est une base de données, Phpmyadmin est une représentation graphique de notre base de données My Sql, il est donc indispensable de l'installer.
 On lance ``apt-get install -y mariadb-server``.
 Puis ``service mysql start``.
 
@@ -111,7 +110,7 @@ echo "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_
 echo "GRANT ALL ON wordpress.* TO 'wordpress_user'@'localhost' IDENTIFIED BY 'password';" | mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
 ```
-On utilise un nom de user dedié plutot que le root afin d'eviter de remettre le mot de passe tout le temps et c'est ainsi plus securisé.
+On utilise un nom de user dedié plutôt que le root afin d'éviter d'avoir à remettre le mot de passe tout le temps et c'est ainsi plus securisé.
 
 ### PHP
 
@@ -144,7 +143,7 @@ Ne pas oublier de les décompresser ``tar -xvf fichier.tar.gz``.
 ### PHP
 
 Le fichier qui nous intéresse s'appelle phpMyAdmin-4.9.5-all-languages.tar.gz.
-Une fois les precedentes etapes effectuees, on le mv dans le dossier localhost.
+Une fois les precedentes etapes effectuées, on le mv dans le dossier localhost.
 ```
 mv phpMyAdmin-4.9.5-all-languages phpmyadmin
 mv phpmyadmin /var/www/localhost/phpmyadmin
@@ -153,13 +152,13 @@ mv phpmyadmin /var/www/localhost/phpmyadmin
 ### Wordpress
 
 Le fichier qui nous intéresse s'appelle latest-fr_FR.tar.gz.
-Une fois les precedentes etapes effectuees, on mv dans nouveau dossier wordpress dans localhost.
+Une fois les precedentes etapes effectuées, on mv dans nouveau dossier wordpress dans localhost.
 ```
 mkdir /var/www/localhost/wordpress
 mv wordpress/* /var/www/localhost/wordpress
 ```
-Pour pouvoir se connecter il faut creer un user ainsi qu'un mot de passe lié a notre bdd.
-On va creer un nouveau fichier wp-config.php avec notre information.
+Pour pouvoir se connecter il faut indiqué un user ainsi qu'un mot de passe lié à notre bdd.
+On va créer un nouveau fichier wp-config.php avec notre information.
 ```
 rm /var/www/localhost/wordpress/wp-config-sample.php
 cp wp-config.php /var/www/localhost/wordpress
@@ -187,8 +186,8 @@ Puis on lance
 openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/localhost.pem -keyout /etc/nginx/ssl/localhost.key -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=ambre/CN=localhost"
 ```
 
-- -x509 :arrow_right: Genere un certificat autosigné et non une demande de certificat.
-- -days 365 :arrow_right: Specifie le nombre de jour que le certificat sera valable.
+- -x509 :arrow_right: Genère un certificat autosigné.
+- -days 365 :arrow_right: Spécifie le nombre de jours que le certificat sera valable.
 
 Pour plus de précisions sur les options de commande : https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html
 
