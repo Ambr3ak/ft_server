@@ -27,6 +27,7 @@ Une image peut contenir tout ce que l'on désire.
 ### Comment naviguer dans le conteneur ?
 
 Pour naviguer dans les differentes partir du conteneur, on utilise les mêmes commandes shell.
+Pour entrer dans le conteneur :
 
 ``
 docker exec -it monimage bash
@@ -35,7 +36,10 @@ docker exec -it monimage bash
 ## Premiere etape : le Dockerfile
 
 Le Dockerfile est un fichier qui va permettre de lancer son image et d'y inclure tous les fichiers que l'on souhaite.
-Ligne 1 : ``FROM image:version -> FROM debian:buster``
+Ligne 1 : 
+```
+FROM image:version -> FROM debian:buster
+```
 
 FROM permet de spécifier une image existante sur laquelle on veut se baser. Dans notre cas, Debian Buster.
 Apres avoir build et run notre conteneur, il sera basé sur l'image de l'OS Debian Buster.
@@ -99,6 +103,14 @@ MySql est une base de données, Phpmyadmin est une représentation graphique de 
 On lance ``apt-get install -y mariadb-server``.
 Puis ``service mysql start``.
 
+Les services Phpmyadmin et Wordpress ont besoin d'une base de données pour fonctionner. On doit donc lui indiquer un nom de dbb, un user et un mot de passe.
+```
+echo "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;" | mysql -u root
+echo "GRANT ALL ON wordpress.* TO 'wordpress_user'@'localhost' IDENTIFIED BY 'password';" | mysql -u root
+echo "FLUSH PRIVILEGES;" | mysql -u root
+```
+On utilise un nom de user dedié plutot que le root afin d'eviter de remettre le mot de passe tout le temps et c'est ainsi plus securisé.
+
 ### PHP
 
 Nginx ne contenant pas PHP en natif, il est nécessaire d’installer le gestionnaire de processus PHP appelé PHP FPM.
@@ -151,46 +163,29 @@ rm /var/www/localhost/wordpress/wp-config-sample.php
 cp wp-config.php /var/www/localhost/wordpress
 ```
 
-define( 'DB_NAME', 'wordpress' ); :arrow_right: Nom de la base de donnée
+- define( 'DB_NAME', 'wordpress' ); :arrow_right: Nom de la base de donnée
 
-define( 'DB_USER', 'wordpress_user' ); :arrow_right: Nom du user
+- define( 'DB_USER', 'wordpress_user' ); :arrow_right: Nom du user
 
-define( 'DB_PASSWORD', 'password' ); :arrow_right: Mot de passe de la bdd
+- define( 'DB_PASSWORD', 'password' ); :arrow_right: Mot de passe de la bdd
 
-define( 'DB_HOST', 'localhost' ); :arrow_right: nom d'hôte du serveur de votre base de donnée
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- define( 'DB_HOST', 'localhost' ); :arrow_right: nom d'hôte du serveur de votre base de donnée
 
 ## SSL
 
 Un certificat SSL est un fichier de données qui lie une clé cryptographique aux informations d'une organisation. Installé sur un serveur, le certificat active le cadenas et le protocole « https » (port 443 par défaut), afin d'assurer une connexion sécurisée entre le serveur web et le navigateur.
 
-On lance `` apt-get 
+On lance ``apt-get -y install openssl``.
+On crée un dossier qui va contenir nos certificats. 
+``mkdir /etc/nginx/ssl``
+Puis on lance 
+``openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/localhost.pem -keyout /etc/nginx/ssl/localhost.key -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=ambre/CN=localhost"``
 
+- -x509 :arrow_right: Genere un certificat autosigné et non une demande de certificat.
+- -days 365 :arrow_right: Specifie le nombre de jour que le certificat sera valable.
 
+Pour plus de précisions sur les options de commande : https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html
 
+## La gestion des logs et des erreurs de logs
 
-
-
-
-
-
-
+``tail -f /var/log/nginx/access.log /var/log/nginx/error.log``
