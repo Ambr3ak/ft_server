@@ -81,6 +81,114 @@ ENTRYPOINT ici précise la commande a lancer à l’entrée du conteneur.
 
 Pour plus d'utilisations des commandes Dockerfile : https://docs.docker.com/engine/reference/builder/
 
+## Deuxieme etape : Installer LEMP
+
+LEMP est un pack pratique a l’installation de serveur web. Son acronyme signie Linux, E(nginx), Mariadb (base de donnée MySql) et Php.
+
+La commande ``apt-get`` permet d'obtenir facilement les paquets necessaires a notre installation.
+On effectue toujours un ``apt-get update`` avant afin de recuperer les mises a jour des paquets.
+
+### Nginx 
+
+On installe le paquet Nginx ``apt-get -y install nginx``.
+Pour lancer le service ``service nginx start``.
+
+### MySql
+
+MySql est une base de données, Phpmyadmin est une représentation graphique de notre base de données, elle est donc indispensable.
+On lance ``apt-get install -y mariadb-server``.
+Puis ``service mysql start``.
+
+### PHP
+
+Nginx ne contenant pas PHP en natif, il est nécessaire d’installer le gestionnaire de processus PHP appelé PHP FPM.
+On lance ``apt-get install -y php7.3 \
+     php-cli \
+     php-cgi \
+     php-mbstring \
+     php-fpm \
+     php-mysql \ 
+     php-json \``.
+Puis ``service php7.3-fpm start``.
+
+### La configuration
+
+Il est obligatoire de reconfigurer le fichier par defaut en ngninx.conf avec notre nouvelle configuration. 
+On n'oublie pas d'ajouter index.php dans notre configuration qui n'y est pas par défaut.
+```
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled
+rm -rf /etc/nginx/sites-enabled/default
+cp nginx.conf /etc/nginx/sites-enabled/
+```
+## Troisieme etape : Phpmyadmin et Wordpress
+
+On crée le dossier dans lequel le serveur ira chercher ses fichiers. Ici appelé ``/var/www/localhost``
+
+En installant de pack wget ``apt-get -y wget`` on récupérera depuis le site officiel les fichiers .tar.gz nécessaires à l'activation de nos services.
+Ne pas oublier de les décompresser ``tar -xvf fichier.tar.gz``.
+
+### PHP
+
+Le fichier qui nous intéresse s'appelle phpMyAdmin-4.9.5-all-languages.tar.gz.
+Une fois les precedentes etapes effectuees, on le mv dans le dossier localhost.
+```
+mv phpMyAdmin-4.9.5-all-languages phpmyadmin
+mv phpmyadmin /var/www/localhost/phpmyadmin
+```
+
+### Wordpress
+
+Le fichier qui nous intéresse s'appelle latest-fr_FR.tar.gz.
+Une fois les precedentes etapes effectuees, on mv dans nouveau dossier wordpress dans localhost.
+```
+mkdir /var/www/localhost/wordpress
+mv wordpress/* /var/www/localhost/wordpress
+```
+Pour pouvoir se connecter il faut creer un user ainsi qu'un mot de passe lié a notre bdd.
+On va creer un nouveau fichier wp-config.php avec notre information.
+```
+rm /var/www/localhost/wordpress/wp-config-sample.php
+cp wp-config.php /var/www/localhost/wordpress
+```
+
+define( 'DB_NAME', 'wordpress' ); :arrow_right: Nom de la base de donnée
+
+define( 'DB_USER', 'wordpress_user' ); :arrow_right: Nom du user
+
+define( 'DB_PASSWORD', 'password' ); :arrow_right: Mot de passe de la bdd
+
+define( 'DB_HOST', 'localhost' ); :arrow_right: nom d'hôte du serveur de votre base de donnée
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## SSL
+
+Un certificat SSL est un fichier de données qui lie une clé cryptographique aux informations d'une organisation. Installé sur un serveur, le certificat active le cadenas et le protocole « https » (port 443 par défaut), afin d'assurer une connexion sécurisée entre le serveur web et le navigateur.
+
+On lance `` apt-get 
+
+
+
+
+
 
 
 
