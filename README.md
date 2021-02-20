@@ -33,15 +33,15 @@ Pour entrer dans le conteneur :
 docker exec -it monimage bash
 ``
 
-## Premiere etape : le Dockerfile
+## Le Dockerfile
 
 Le Dockerfile est un fichier qui va permettre de lancer son image et d'y inclure tous les fichiers que l'on souhaite.
-Ligne 1 : 
+Ligne 1 
 ```
 FROM image:version -> FROM debian:buster
 ```
 
-FROM permet de spécifier une image existante sur laquelle on veut se baser. Dans notre cas, Debian Buster.
+``FROM`` permet de spécifier une image existante sur laquelle on veut se baser. Dans notre cas, Debian Buster.
 Apres avoir build et run notre conteneur, il sera basé sur l'image de l'OS Debian Buster.
 
 Ligne 3 - 15 
@@ -61,7 +61,7 @@ RUN apt-get -y update && apt-get -y install mariadb-server \
 RUN apt-get install openssl
 ```
 
-RUN permet d'executer des commandes dans le conteneur. Ainsi on installe tous les paquets nécessaires a faire tourner notre serveur.
+``RUN`` permet d'executer des commandes dans le conteneur. Ainsi on installe tous les paquets nécessaires a faire tourner notre serveur.
 
 ligne 17 - 21 
 ```
@@ -72,20 +72,20 @@ COPY srcs/nginx_auto.conf .
 COPY srcs/entrypoint-container.sh .
 ```
               
-Pour utiliser des fichiers exterieurs dans votre conteneur on les ajoute a la racine avec la commande COPY.
+Pour utiliser des fichiers exterieurs dans votre conteneur on les ajoute a la racine avec la commande ``COPY``.
 Les fichiers d'installations et de configuration de nos services seront donc a la racine du conteneur.
 
 Ligne 23 ``EXPOSE 80 443``
 
-EXPOSE permet de preciser le port d'ecoute du conteneur.
+``EXPOSE`` permet de preciser le port d'ecoute du conteneur.
 
 Ligne 24 ``ENTRYPOINT ["bash", "entrypoint-container.sh"]``
 
-ENTRYPOINT ici précise la commande a lancer à l’entrée du conteneur. 
+``ENTRYPOINT`` ici précise la commande a lancer à l’entrée du conteneur. 
 
 Pour plus d'utilisations des commandes Dockerfile : https://docs.docker.com/engine/reference/builder/
 
-## Deuxieme etape : Installer LEMP
+## Installer LEMP
 
 LEMP est un pack pratique a l’installation de serveur web. Son acronyme signie Linux, E(nginx), Mariadb (base de donnée MySql) et Php.
 
@@ -132,7 +132,7 @@ ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled
 rm -rf /etc/nginx/sites-enabled/default
 cp nginx.conf /etc/nginx/sites-enabled/
 ```
-## Troisieme etape : Phpmyadmin et Wordpress
+## Phpmyadmin et Wordpress
 
 On crée le dossier dans lequel le serveur ira chercher ses fichiers. Ici appelé ``/var/www/localhost``
 
@@ -176,10 +176,14 @@ cp wp-config.php /var/www/localhost/wordpress
 Un certificat SSL est un fichier de données qui lie une clé cryptographique aux informations d'une organisation. Installé sur un serveur, le certificat active le cadenas et le protocole « https » (port 443 par défaut), afin d'assurer une connexion sécurisée entre le serveur web et le navigateur.
 
 On lance ``apt-get -y install openssl``.
+
 On crée un dossier qui va contenir nos certificats. 
 ``mkdir /etc/nginx/ssl``
+
 Puis on lance 
-``openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/localhost.pem -keyout /etc/nginx/ssl/localhost.key -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=ambre/CN=localhost"``
+```
+openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/localhost.pem -keyout /etc/nginx/ssl/localhost.key -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=ambre/CN=localhost"
+```
 
 - -x509 :arrow_right: Genere un certificat autosigné et non une demande de certificat.
 - -days 365 :arrow_right: Specifie le nombre de jour que le certificat sera valable.
@@ -189,3 +193,15 @@ Pour plus de précisions sur les options de commande : https://www.openssl.org/d
 ## La gestion des logs et des erreurs de logs
 
 ``tail -f /var/log/nginx/access.log /var/log/nginx/error.log``
+
+## Mes sources
+
+- https://openclassrooms.com/fr/courses/2035766-optimisez-votre-deploiement-en-creant-des-conteneurs-avec-docker/6211517-creez-votre-premier-dockerfile
+
+- https://www.youtube.com/watch?v=X3Pr5VATOyA
+
+- https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mariadb-php-lemp-stack-on-debian-10
+
+- https://howto.wared.fr/installation-wordpress-ubuntu-nginx/
+
+- https://github.com/Emmabrdt/ft_server
