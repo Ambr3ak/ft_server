@@ -40,10 +40,10 @@ Le Dockerfile est un fichier qui va permettre de lancer son image et d'y inclure
 
 Ligne 1 
 ```
-FROM image:version -> FROM debian:buster
+FROM debian:buster
 ```
 
-``FROM`` permet de spécifier une image existante sur laquelle on veut se baser. Dans notre cas, Debian Buster.
+``FROM`` permet de spécifier une image existante sur laquelle on veut se baser ainsi que sa version. Dans notre cas, Debian Buster.
 Apres avoir build et run notre conteneur, il sera basé sur l'image de l'OS Debian Buster.
 
 Ligne 3 - 15 
