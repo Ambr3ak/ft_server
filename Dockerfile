@@ -14,11 +14,11 @@ RUN apt-get -y update && apt-get -y install mariadb-server \
      libnss3-tools
 RUN apt-get install openssl
 
-COPY nginx.conf .
-COPY wp-config.php .
-COPY autoindex.sh .
-COPY nginx_auto.conf .
-COPY entrypoint-container.sh .
+COPY srcs/nginx.conf .
+COPY srcs/wp-config.php .
+COPY srcs/autoindex.sh .
+COPY srcs/nginx_auto.conf .
+COPY srcs/entrypoint-container.sh .
 
 
 EXPOSE 80 443
