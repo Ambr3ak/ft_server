@@ -10,7 +10,7 @@ Wordpress, Phpmyadmin, ainsi qu’une base de données."
 
 ```
 docker build -t ft_server . 
-docker run --name=ft_server -p 443:443 -it --rm ft_server
+docker run --name=ft_server -p 80:80 -p 443:443 -it --rm ft_server
 ```
 
 ### Qu'est ce que Docker ?
