@@ -154,6 +154,7 @@ mv wordpress/* /var/www/localhost/wordpress
 ```
 In order to be able to connect we must indicate a user and a password linked to our database.
 We will create a new file wp-config.php with our information.
+
 ```
 rm /var/www/localhost/wordpress/wp-config-sample.php
 cp wp-config.php /var/www/localhost/wordpress
@@ -166,6 +167,7 @@ cp wp-config.php /var/www/localhost/wordpress
 - define( 'DB_PASSWORD', 'password' ); :arrow_right: Data base password.
 
 - define( 'DB_HOST', 'localhost' ); :arrow_right: Host name of the db.
+
 ## SSL
 
 SSL Certificates are small data files that digitally bind a cryptographic key to an organization’s details. When installed on a web server, it activates the padlock and the https protocol and allows secure connections from a web server to a browser. Typically, SSL is used to secure credit card transactions, data transfer and logins, and more recently is becoming the norm when securing browsing of social media sites.
@@ -183,7 +185,7 @@ openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/ssl/
 
 For more specifies about the command : https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html
 
-## La gestion des logs et des erreurs de logs
+## Logs and errors
 
 ``tail -f /var/log/nginx/access.log /var/log/nginx/error.log``
 
