@@ -85,8 +85,8 @@ More specifies about Dockerfile : https://docs.docker.com/engine/reference/build
 
 The LEMP software stack is a group of software that can be used to serve dynamic web pages and web applications. This is an acronym that describes a **L**inux operating system, with an **E**Nginx web server. The backend data is stored in the **M**ySQL database and the dynamic processing is handled by **P**HP.
 
-La commande ``apt-get`` permet d'obtenir facilement les paquets nécessaires à notre installation.
-On effectue toujours un ``apt-get update`` avant afin de récupérer les mises à jour des paquets.
+The command ``apt-get`` allows us to easily obtain the packages necessary for our installation.
+We always perform an "aptget update" before to get the package updates.
 
 ### Nginx 
 
